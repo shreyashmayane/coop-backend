@@ -5,13 +5,13 @@ const {
   cancelBooking,
   rateBooking
 } = require('../controllers/booking.controller');
-const { requireAuth } = require('../middleware/auth.middleware');
+const { verifyToken } = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
-router.post('/', requireAuth, createBooking);
-router.get('/:id', requireAuth, getBookingById);
-router.patch('/:id/cancel', requireAuth, cancelBooking);
-router.post('/:id/rate', requireAuth, rateBooking);
+router.post('/', verifyToken, createBooking);
+router.get('/:id', verifyToken, getBookingById);
+router.patch('/:id/cancel', verifyToken, cancelBooking);
+router.post('/:id/rate', verifyToken, rateBooking);
 
 module.exports = router;
