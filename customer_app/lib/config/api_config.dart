@@ -5,7 +5,7 @@ class ApiConfig {
 
   // ─── Backend Base URL ─────────────────────────────────────────────────────
   /// Update this when your network/host changes.
-  static const String baseUrl = 'http://10.56.25.26:3000/api';
+  static const String baseUrl = 'https://coop-backend-ssdy.onrender.com/api';
 
   // ─── Razorpay ─────────────────────────────────────────────────────────────
   /// Replace with your Razorpay TEST key from https://dashboard.razorpay.com
