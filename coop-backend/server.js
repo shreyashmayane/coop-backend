@@ -2,8 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
-const authRoutes  = require('./routes/auth.routes');
-const adminRoutes = require('./routes/admin.routes');
+const authRoutes     = require('./routes/auth.routes');
+const adminRoutes    = require('./routes/admin.routes');
+const workerRoutes   = require('./routes/worker.routes');
+const bookingRoutes  = require('./routes/booking.routes');
+const customerRoutes = require('./routes/customer.routes');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -18,8 +21,11 @@ app.use(cors({
 app.use(express.json());
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
-app.use('/api/auth',  authRoutes);
-app.use('/api/admin', adminRoutes);
+app.use('/api/auth',     authRoutes);
+app.use('/api/admin',    adminRoutes);
+app.use('/api/workers',  workerRoutes);
+app.use('/api/bookings', bookingRoutes);
+app.use('/api/customer', customerRoutes);
 
 // ─── Health check ─────────────────────────────────────────────────────────────
 app.get('/api/health', (_req, res) => res.json({ status: 'ok', ts: new Date() }));
