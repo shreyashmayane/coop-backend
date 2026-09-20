@@ -65,9 +65,9 @@ class BookingModel {
   factory BookingModel.fromJson(Map<String, dynamic> json) {
     final worker = json['worker'] as Map<String, dynamic>? ?? {};
     return BookingModel(
-      id: json['_id'] ?? json['id'] ?? '',
-      workerId: worker['_id'] ?? worker['id'] ?? json['workerId'] ?? '',
-      workerName: worker['name'] ?? json['workerName'] ?? '',
+      id: (json['_id'] ?? json['id'] ?? '').toString(),
+      workerId: (worker['_id'] ?? worker['id'] ?? json['workerId'] ?? '').toString(),
+      workerName: worker['name'] ?? json['workerName'] ?? json['customerName'] ?? '',
       workerAvatar: worker['avatarUrl'] ?? json['workerAvatar'] ?? '',
       serviceType: json['serviceType'] ?? '',
       scheduledAt: json['scheduledAt'] != null

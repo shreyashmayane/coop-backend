@@ -10,8 +10,8 @@ class BookingProvider extends ChangeNotifier {
   String? _error;
 
   List<BookingModel> get bookings => _bookings;
-  List<BookingModel> get pendingBookings => _bookings.where((b) => b.status == 'pending').toList();
-  List<BookingModel> get activeBookings => _bookings.where((b) => b.status == 'accepted' || b.status == 'in_progress').toList();
+  List<BookingModel> get pendingBookings => _bookings.where((b) => b.status == BookingStatus.requested).toList();
+  List<BookingModel> get activeBookings => _bookings.where((b) => b.status == BookingStatus.accepted || b.status == BookingStatus.inProgress).toList();
   
   bool get loading => _loading;
   String? get error => _error;

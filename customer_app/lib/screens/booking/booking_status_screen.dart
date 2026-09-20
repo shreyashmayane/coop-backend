@@ -40,7 +40,7 @@ class BookingStatusScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // ── Booking ID ──────────────────────────────────────────────
-              Text('Booking #${booking.id.substring(0, 8).toUpperCase()}',
+              Text('Booking #${booking.id}',
                   style: Theme.of(context).textTheme.bodyMedium),
               const SizedBox(height: AppTheme.spacingLg),
               // ── Stepper ─────────────────────────────────────────────────

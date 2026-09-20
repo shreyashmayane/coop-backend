@@ -9,10 +9,10 @@ class BookingService {
   Future<List<BookingModel>> getWorkerBookings() async {
     try {
       final res = await _dio.get(ApiConfig.workerBookings);
-      final list = res.data['bookings'] as List;
-      return list.map((e) => BookingModel.fromJson(e)).toList();
+      final list = res.data as List<dynamic>;
+      return list.map((e) => BookingModel.fromJson(e as Map<String, dynamic>)).toList();
     } catch (e) {
-      throw ApiException('Failed to fetch jobs');
+      throw ApiException('Error: $e');
     }
   }
 

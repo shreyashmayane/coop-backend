@@ -51,7 +51,7 @@ class _RegisterScreenState extends State<RegisterScreen>
       _passCtrl.text,
     );
     if (ok && mounted) {
-      Navigator.of(context).pushReplacementNamed(AppRoutes.home);
+      Navigator.of(context).pushReplacementNamed(AppRoutes.skills);
     }
   }
 

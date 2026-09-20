@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../providers/auth_provider.dart';
 import '../../providers/booking_provider.dart';
+import '../../providers/worker_provider.dart';
 import '../../config/app_theme.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -16,12 +18,17 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<BookingProvider>().fetchBookings();
+      final auth = context.read<AuthProvider>();
+      if (auth.user != null) {
+        context.read<WorkerProvider>().fetchInitialAvailability(auth.user!.id);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<BookingProvider>();
+    final worker = context.watch<WorkerProvider>();
 
     return Scaffold(
       appBar: AppBar(
@@ -33,19 +40,51 @@ class _HomeScreenState extends State<HomeScreen> {
           )
         ],
       ),
-      body: provider.loading
-          ? const Center(child: CircularProgressIndicator())
-          : provider.error != null
-              ? Center(child: Text(provider.error!, style: const TextStyle(color: AppTheme.error)))
-              : RefreshIndicator(
-                  onRefresh: provider.fetchBookings,
-                  child: provider.pendingBookings.isEmpty
-                      ? ListView(
-                          children: const [
-                            SizedBox(height: 100),
-                            Center(child: Text('No pending job requests.')),
-                          ],
-                        )
+      body: Column(
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: AppTheme.spacingMd, vertical: AppTheme.spacingSm),
+            color: worker.isAvailable ? AppTheme.success.withOpacity(0.1) : AppTheme.surfaceLight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      worker.isAvailable ? 'You are Online' : 'You are Offline',
+                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                            color: worker.isAvailable ? AppTheme.success : AppTheme.onSurface,
+                          ),
+                    ),
+                    Text(
+                      worker.isAvailable ? 'Waiting for job requests...' : 'Go online to receive jobs',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ],
+                ),
+                Switch(
+                  value: worker.isAvailable,
+                  activeColor: AppTheme.success,
+                  onChanged: worker.loading ? null : (val) => worker.toggleAvailability(val),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: provider.loading
+                ? const Center(child: CircularProgressIndicator())
+                : provider.error != null
+                    ? Center(child: Text(provider.error!, style: const TextStyle(color: AppTheme.error)))
+                    : RefreshIndicator(
+                        onRefresh: provider.fetchBookings,
+                        child: provider.pendingBookings.isEmpty
+                            ? ListView(
+                                children: const [
+                                  SizedBox(height: 100),
+                                  Center(child: Text('No pending job requests.')),
+                                ],
+                              )
                       : ListView.builder(
                           padding: const EdgeInsets.all(AppTheme.spacingMd),
                           itemCount: provider.pendingBookings.length,
@@ -59,7 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'Booking #${booking.id.substring(0, 8)}',
+                                      'Booking #${booking.id}',
                                       style: Theme.of(context).textTheme.titleLarge,
                                     ),
                                     const SizedBox(height: 8),
@@ -92,7 +131,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                         ),
-                ),
+                      ),
+          ),
+        ],
+      ),
     );
   }
 }

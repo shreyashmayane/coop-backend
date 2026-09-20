@@ -8,6 +8,7 @@ class UserModel {
   final String? address;
   final String? avatarUrl;
   final String locale;
+  final String status;
 
   const UserModel({
     required this.id,
@@ -17,16 +18,18 @@ class UserModel {
     this.address,
     this.avatarUrl,
     this.locale = 'en',
+    this.status = 'active',
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
-        id: json['_id'] ?? json['id'] ?? '',
+        id: (json['_id'] ?? json['id'] ?? '').toString(),
         name: json['name'] ?? '',
         phone: json['phone'] ?? '',
         email: json['email'],
         address: json['address'],
         avatarUrl: json['avatarUrl'],
         locale: json['locale'] ?? 'en',
+        status: json['status'] ?? 'active',
       );
 
   Map<String, dynamic> toJson() => {
@@ -37,6 +40,7 @@ class UserModel {
         'address': address,
         'avatarUrl': avatarUrl,
         'locale': locale,
+        'status': status,
       };
 
   String toJsonString() => jsonEncode(toJson());
@@ -50,6 +54,7 @@ class UserModel {
     String? address,
     String? avatarUrl,
     String? locale,
+    String? status,
   }) =>
       UserModel(
         id: id,
@@ -59,5 +64,6 @@ class UserModel {
         address: address ?? this.address,
         avatarUrl: avatarUrl ?? this.avatarUrl,
         locale: locale ?? this.locale,
+        status: status ?? this.status,
       );
 }

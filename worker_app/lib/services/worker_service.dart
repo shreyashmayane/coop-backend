@@ -7,10 +7,21 @@ class WorkerService {
 
   Future<bool> toggleStatus(bool isAvailable) async {
     try {
-      final res = await _dio.patch(ApiConfig.workerStatus, data: {'is_available': isAvailable});
-      return res.data['worker']['is_available'] as bool;
-    } catch (e) {
-      throw ApiException('Failed to update availability');
+      await _dio.put('/workers/status', data: {
+        'status': isAvailable ? 'active' : 'offline',
+      });
+      return isAvailable;
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
+    }
+  }
+
+  Future<bool> getWorkerAvailability(String id) async {
+    try {
+      final res = await _dio.get('/workers/$id');
+      return res.data['isAvailable'] == true;
+    } on DioException catch (e) {
+      throw ApiException.fromDio(e);
     }
   }
 }

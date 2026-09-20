@@ -19,7 +19,7 @@ async function register(req, res) {
     const result = await pool.query(
       `INSERT INTO users (name, phone, password_hash, role)
        VALUES ($1, $2, $3, $4)
-       RETURNING id, name, phone, role, created_at`,
+       RETURNING id, name, phone, role, status, created_at`,
       [name, phone, hash, role]
     );
     return res.status(201).json({ user: result.rows[0] });
@@ -48,7 +48,7 @@ async function login(req, res) {
 
   try {
     const result = await pool.query(
-      `SELECT id, name, phone, role, password_hash, society_id, federation_id
+      `SELECT id, name, phone, role, status, password_hash, society_id, federation_id
        FROM users WHERE phone = $1`,
       [phone]
     );

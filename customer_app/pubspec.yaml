@@ -53,6 +53,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   build_runner: ^2.4.7
   hive_generator: ^2.0.1
+  flutter_launcher_icons: ^0.14.4
 
 flutter:
   uses-material-design: true
@@ -64,3 +65,8 @@ flutter:
     - assets/icons/
 
   # Fonts are loaded via google_fonts package at runtime — no local .ttf files needed
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/icon.png"

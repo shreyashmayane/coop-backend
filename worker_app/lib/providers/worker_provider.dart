@@ -12,10 +12,17 @@ class WorkerProvider extends ChangeNotifier {
   bool get loading => _loading;
   String? get error => _error;
 
-  // Ideally fetched from a profile endpoint, but for now we just toggle.
-  void setInitialAvailability(bool status) {
-    _isAvailable = status;
+  Future<void> fetchInitialAvailability(String workerId) async {
+    _loading = true;
     notifyListeners();
+    try {
+      _isAvailable = await _service.getWorkerAvailability(workerId);
+    } catch (e) {
+      _error = e.toString();
+    } finally {
+      _loading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> toggleAvailability(bool status) async {

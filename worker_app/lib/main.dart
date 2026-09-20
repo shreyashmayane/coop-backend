@@ -6,9 +6,13 @@ import 'providers/auth_provider.dart';
 import 'providers/booking_provider.dart';
 import 'providers/worker_provider.dart';
 import 'screens/auth/login_screen.dart';
+import 'screens/auth/register_screen.dart';
 import 'screens/home/main_screen.dart';
+import 'screens/onboarding/skill_selection_screen.dart';
+import 'screens/onboarding/verification_pending_screen.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const WorkerApp());
 }
 
@@ -34,8 +38,14 @@ class WorkerApp extends StatelessWidget {
           return MaterialApp(
             title: 'Coop Worker',
             theme: AppTheme.dark,
-            initialRoute: auth.isAuthenticated ? AppRoutes.home : AppRoutes.login,
-            routes: AppRoutes.routes,
+            home: auth.isAuthenticated ? const MainScreen() : const LoginScreen(),
+            routes: {
+              AppRoutes.login: (_) => const LoginScreen(),
+              AppRoutes.register: (_) => const RegisterScreen(),
+              AppRoutes.home: (_) => const MainScreen(),
+              AppRoutes.skills: (_) => const SkillSelectionScreen(),
+              AppRoutes.verification: (_) => const VerificationPendingScreen(),
+            },
           );
         },
       ),
