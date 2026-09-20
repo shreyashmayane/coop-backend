@@ -6,11 +6,11 @@ const { verifyToken } = require('../middleware/auth.middleware');
 const router = express.Router();
 
 router.get('/nearby', getNearbyWorkers);
-router.get('/:id', getWorkerById);
-
 // Protected routes (for workers themselves)
 router.put('/status', verifyToken, updateStatus);
 router.get('/bookings', verifyToken, getWorkerBookings);
 router.patch('/bookings/:id/status', verifyToken, updateBookingStatus);
+
+router.get('/:id', getWorkerById);
 
 module.exports = router;

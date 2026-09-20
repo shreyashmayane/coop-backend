@@ -132,6 +132,11 @@ async function getCustomerBookings(req, res) {
 async function getWorkerBookings(req, res) {
   const workerId = req.user.id;
 
+  // Handle guest accounts gracefully to prevent database type errors
+  if (workerId === 'guest' || isNaN(parseInt(workerId, 10))) {
+    return res.json([]);
+  }
+
   try {
     const result = await pool.query(
       `SELECT * FROM bookings WHERE worker_id = $1 ORDER BY created_at DESC`,
