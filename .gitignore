@@ -1,4 +1,21 @@
+# Node
 node_modules/
 .env
 *.log
 npm-debug.log*
+
+# Flutter
+.dart_tool/
+.packages
+build/
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Web
+dist/
